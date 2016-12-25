@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("sentinel")
 public class SentinelConfiguration {
 
+    private Integer webPort = 8080;
+
     private Long expirationDelay = 90000L;
 
     private Long checkPeriod = 300000L;
@@ -25,6 +27,14 @@ public class SentinelConfiguration {
     private String mailHost = "localhost";
 
     private Integer mailPort = 25;
+
+    public Integer getWebPort() {
+        return webPort;
+    }
+
+    public void setWebPort(Integer webPort) {
+        this.webPort = webPort;
+    }
 
     public Long getExpirationDelay() {
         return expirationDelay;

@@ -27,7 +27,7 @@ public class App {
 
         public void configure() throws Exception {
 
-            restConfiguration().port(8080);
+            restConfiguration().port(config.getWebPort());
 
             rest("/sentinel")
                 .get("/ping/{ClientCode}")
