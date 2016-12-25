@@ -1,0 +1,10 @@
+sentinel:
+  expiration-delay: 120000
+  check-period: 600000
+  emails:
+    - "recipient@dest.com"
+  mail-from: "noreply@source.com"
+  mail-host: "localhost"
+  mail-port: 25
+  mail-subject: No client
+  mail-body: WTF.
