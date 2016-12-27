@@ -1,7 +1,7 @@
 package me.nicolaferraro.sentinel;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ public class SentinelConfiguration {
 
     private Long checkPeriod = 300000L;
 
-    private List<String> emails = new LinkedList<>();
+    private Map<String, String> emails = new HashMap<>();
 
     private String mailFrom;
 
@@ -52,12 +52,12 @@ public class SentinelConfiguration {
         this.checkPeriod = checkPeriod;
     }
 
-    public List<String> getEmails() {
+    public Map<String, String> getEmails() {
         return emails;
     }
 
-    public String getEmailsCsv() {
-        return emails.stream().reduce((s1, s2) -> s1 + "," + s2).get();
+    public String getEmail(String name) {
+        return emails.get(name);
     }
 
     public String getMailFrom() {

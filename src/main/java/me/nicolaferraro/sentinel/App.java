@@ -6,9 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
 
-/**
- *
- */
 @SpringBootApplication
 public class App {
 
@@ -30,7 +27,7 @@ public class App {
             restConfiguration().port(config.getWebPort());
 
             rest("/sentinel")
-                .get("/ping/{ClientCode}")
+                .post("/ping/{ClientCode}")
                 .produces("text/plain")
                 .route()
                 .setBody().header("ClientCode")
@@ -42,14 +39,19 @@ public class App {
 
             from("timer:check?period=" + config.getCheckPeriod())
             .bean(tracker, "getExpired")
+            .split().body()
+            .log("Expired ${body}")
+            .bean(config, "getEmail")
             .choice()
-                .when().simple("${body.size} > 0")
-                .log("Sending mails")
-                .setHeader("from", method(config, "getMailFrom"))
-                .setHeader("to", method(config, "getEmailsCsv"))
-                .setHeader("subject", method(config, "getMailSubject"))
-                .setBody().method(config, "getMailBody")
-                .to("smtp://" + config.getMailHost() + ":" + config.getMailPort())
+                .when().simple("${body} != null")
+                    .log("Sending email to ${body}")
+                    .setHeader("from", method(config, "getMailFrom"))
+                    .setHeader("to", body())
+                    .setHeader("subject", method(config, "getMailSubject"))
+                    .setBody().method(config, "getMailBody")
+                    .to("smtp://" + config.getMailHost() + ":" + config.getMailPort())
+                .otherwise()
+                    .log("No email configured")
             .endChoice();
 
         }

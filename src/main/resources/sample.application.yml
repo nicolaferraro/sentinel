@@ -2,7 +2,8 @@ sentinel:
   expiration-delay: 120000
   check-period: 600000
   emails:
-    - "recipient@dest.com"
+    myuri: "recipient@dest.com,recipient2@dest.com"
+    myuri2: "rec2@gmail.com"
   mail-from: "noreply@source.com"
   mail-host: "localhost"
   mail-port: 25
